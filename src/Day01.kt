@@ -1,17 +1,19 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
-    }
+    // Q1
+    val l = Util.readLines("src/InputDay01.txt").map { it.toInt() }
+    // ([1] [0])
+    val increases = (l.drop(1).zip(l.dropLast(1)))
+        .map { if(it.first - it.second > 0) 1 else 0 }
+        .fold(0){ acc, i ->  acc + i }
 
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
+    println("Q1: total increases $increases")
 
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+    // Q2
+    val l1 = l.mapIndexed { index, i -> if (index <= l.size - 3) i + l[index+1] + l[index+2] else 0}.dropLast(2)
 
-    val input = readInput("Day01")
-    println(part1(input))
-    println(part2(input))
+    val increases1 = (l1.drop(1).zip(l1.dropLast(1)))
+        .map { if(it.first - it.second > 0) 1 else 0 }
+        .fold(0){ acc, i ->  acc + i }
+
+    println("Q2: total increases $increases1")
 }
