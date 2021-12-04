@@ -22,3 +22,13 @@ class Util {
         }
     }
 }
+
+fun <T>Iterable<Iterable<T>>.transpose():List<List<T>> = this.foldIndexed(listOf<List<T>>()){
+        index, acc, list ->
+    if (index == 0)
+        list.map { listOf(it) }
+    else
+        list.mapIndexed { index0, i -> acc[index0] + listOf(i)  }
+}
+
+fun String.splitBySpace():List<String> = this.trim().split("""\s+""".toRegex())
