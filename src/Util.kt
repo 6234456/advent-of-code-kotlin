@@ -1,26 +1,32 @@
-import java.net.HttpCookie
-import java.net.URI
-import java.net.URL
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
 import java.nio.file.Paths
 
 class Util {
     companion object{
-        fun readLinesFromURL(url: String):List<String>{
-            val client = HttpClient.newBuilder().build()
-            val request = HttpRequest.newBuilder().uri(URI.create(url)).build()
-
-            val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-
-            return response.body().lines()
-        }
-
         fun readLines(file: String):List<String>{
             return Paths.get(file).toFile().readLines()
         }
     }
+}
+
+// insert the number into asc sorted array
+fun insertPos(v:Int, sortL: List<Int>, hi:Int = sortL.size - 1, lo:Int = 0):Pair<Int,Int>{
+    val h = sortL[hi]
+    val l = sortL[lo]
+
+    if (hi - lo <= 1)
+        return l to h
+
+    if (h <= v)
+        return h to h
+    if (l >= v)
+        return l to l
+
+    val mi = (hi+lo)/2
+    val m = sortL[mi]
+    if (m >= v)
+        return insertPos(v, sortL, mi, lo)
+    else
+        return insertPos(v, sortL, hi, mi)
 }
 
 fun <T>Iterable<Iterable<T>>.transpose():List<List<T>> = this.foldIndexed(listOf<List<T>>()){
