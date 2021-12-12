@@ -38,3 +38,10 @@ fun <T>Iterable<Iterable<T>>.transpose():List<List<T>> = this.foldIndexed(listOf
 }
 
 fun String.splitBySpace():List<String> = this.trim().split("""\s+""".toRegex())
+
+fun <K,V> Map<K,Iterable<V>>.merge(map: Map<K,Iterable<V>>): Map<K,List<V>> {
+    return (this.keys + map.keys).map {
+        it to
+        this.getOrDefault(it, listOf()) + map.getOrDefault(it, listOf())
+    }.toMap()
+}
