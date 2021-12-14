@@ -45,3 +45,21 @@ fun <K,V> Map<K,Iterable<V>>.merge(map: Map<K,Iterable<V>>): Map<K,List<V>> {
         this.getOrDefault(it, listOf()) + map.getOrDefault(it, listOf())
     }.toMap()
 }
+
+fun <T> Iterable<T>.frequency():Map<T, Long> = this.fold(mutableMapOf()){
+    acc, t ->
+        acc[t] = acc.getOrDefault(t, 0) + 1
+        acc
+}
+
+fun <K, V, T> Map<K, Map<T, V>>.merges(map: Map<K, Map<T, V>>): Map<K, Map<T, V>> {
+    return this.keys.union(map.keys).map {
+        it to this.getOrDefault(it, mapOf()) + map.getOrDefault(it, mapOf())
+    }.toMap()
+}
+
+fun <K> Map<K,Long>.mergeValue(map: Map<K, Long>):Map<K,Long> {
+    return (this.keys + map.keys).associateWith {
+        (this.getOrDefault(it, 0L) + map.getOrDefault(it, 0L))
+    }
+}
