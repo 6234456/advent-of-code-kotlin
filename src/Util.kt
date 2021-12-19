@@ -63,3 +63,31 @@ fun <K> Map<K,Long>.mergeValue(map: Map<K, Long>):Map<K,Long> {
         (this.getOrDefault(it, 0L) + map.getOrDefault(it, 0L))
     }
 }
+
+fun <T>List<T>.splitWith(sep:(T)->Boolean):List<List<T>> {
+    val res = mutableListOf<List<T>>()
+    var start = 0
+    (0 until this.size).forEach {
+        val v = this[it]
+        if (sep(v) || this.size -1 == it){
+            if (it > 0){
+                res += listOf(this.subList(start, if (this.size - 1 == it) it+1 else it))
+            }
+            start = it + 1
+        }
+    }
+
+    return res
+}
+
+fun <T>List<T>.permutations():List<List<T>> {
+    if (this.size <= 1)
+        return listOf(this)
+
+    return this.foldIndexed(listOf()){
+        i, acc, e ->
+        acc + (this.take(i) + this.drop(i+1)).permutations().map { listOf(e) + it }
+    }
+
+
+}

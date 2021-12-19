@@ -132,66 +132,6 @@ def updateValue(l, path, newV):
 def splitL(n):
     return [n/2, n - n/2]
 
-def regular(v):
-    res = []
-    if len(v) < 2:
-        return range(len(v))
-
-    for i in range(len(v)):
-        if i == 0:
-            if not isPair(v[0], v[1]):
-                res.append(i)
-        elif i == len(v) - 1:
-            if not isPair(v[i],v[i-1]):
-                res.append(i)
-        else:
-            if not isPair(v[i],v[i-1]) and not isPair(v[i], v[1+i]):
-                res.append(i)
-
-    return res
-
-def lastReg(v, ls):
-    if len(ls) == 0 or ls[0] > v:
-        return -1
-
-    for i in range(len(ls) - 1, -1, -1):
-        if v > ls[i]:
-            return ls[i]
-
-    return -1
-
-def nextReg(v, ls):
-    if len(ls) == 0 or v > ls[len(ls)-1]:
-        return -1
-
-    for i in range(len(ls)):
-        if ls[i] > v:
-            return ls[i]
-
-    return -1
-
-
-
-
-def isPair(a, b):
-    if len(a) != len(b):
-        return False
-
-    for i in range(len(a)-1):
-        if a[i] != b[i]:
-            return False
-
-    return True
-
-def explodable(l):
-    v = list(flatten(l))
-    return all([len(i) < 5 for i in v])
-
-def splable(l):
-    v = list(flatten(l))
-    lsE = [path(l,i) for i in v]
-
-    return all([i < 10 for i in lsE])
 
 def explode(l0):
     l = l0[:]
@@ -204,8 +144,6 @@ def explode(l0):
         return splt(l)
 
     isFirst = True
-    #r = regular(v)
-    toSplt = []
     for i in range(len(v)):
         if len(v[i]) >= 5:
             e = lsE[i]
@@ -214,28 +152,17 @@ def explode(l0):
                     last = i - 1
                     n = lsE[last] + e
                     if last > -1:
-                 #       if n < 10:
-                            updateValue(l, v[last], n)
-                 #       else:
-                 #           updateValue(l, v[last], splitL(n))
-                    if n > 9:
-                        toSplt.append([v[last], splitL(n)])
+                        updateValue(l, v[last], n)
             else:
                 if i < len(v) - 1:
                     nxt = i + 1
                     n = lsE[nxt] + e
                     if nxt > -1:
-                 #       if n < 10:
-                            updateValue(l, v[nxt], n)
-                 #       else:
-                 #           updateValue(l, v[nxt], splitL(n))
+                        updateValue(l, v[nxt], n)
 
-                    if n > 9:
-                        toSplt.append([v[nxt], splitL(n)])
                 updateValue(l, v[i][:-1], 0)
                 return explode(l)
             isFirst = not isFirst
-            #print l
     return splt(l)
 
 def splt(l0):
@@ -277,13 +204,9 @@ def q2Process(s):
         for j in range(len(v)):
             if i != j:
                 x = mag(addL(v[i], v[j]))
-                if x == 4005:
-                    print v[i]
-                    print v[j]
                 res.append(x)
-    res.sort()
-    print res
-    print max(res)
+    print(max(res))
+
 
 def mag(l):
     if not isinstance(l, list):
@@ -294,20 +217,7 @@ def mag(l):
     return mag(lf) * 3 + mag(rt) * 2
 
 if __name__ == '__main__':
-    s = """[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]
-[[[5,[2,8]],4],[5,[[9,9],0]]]
-[6,[[[6,2],[5,6]],[[7,6],[4,7]]]]
-[[[6,[0,7]],[0,9]],[4,[9,[9,0]]]]
-[[[7,[6,4]],[3,[1,3]]],[[[5,5],1],9]]
-[[6,[[7,3],[3,2]]],[[[3,8],[5,7]],4]]
-[[[[5,4],[7,7]],8],[[8,3],8]]
-[[9,3],[[9,9],[6,[4,9]]]]
-[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
-[[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]"""
-    #print splt([[[[4, 0], [5, 4]], [[7, 0], [15, 5]]], [10, [[11, 9], [0, [11, 8]]]]])
-   # print exp(parse("[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]"))
-    # [2445, 2510, 2565, 2661, 2690, 2691, 2709, 2760, 2817, 2820, 2834, 2856, 2879, 2886, 2904, 2906, 2927, 2959, 2964, 3009, 3012, 3036, 3036, 3039, 3066, 3068, 3084, 3084, 3122, 3129, 3135, 3154, 3156, 3192, 3198, 3210, 3225, 3228, 3233, 3234, 3252, 3273, 3281, 3282, 3302, 3318, 3334, 3335, 3336, 3363, 3381, 3381, 3399, 3408, 3411, 3414, 3414, 3423, 3444, 3446, 3462, 3471, 3478, 3483, 3491, 3518, 3523, 3531, 3550, 3558, 3579, 3603, 3609, 3627, 3627, 3630, 3657, 3675, 3680, 3712, 3735, 3783, 3792, 3877, 3893, 3903, 3947, 3957, 3979, 4005]
-    print (processL(s))
-    print mag(processL(s))
+    print (processL(input))
+    print(mag(processL(input)))
     q2Process(input)
 
